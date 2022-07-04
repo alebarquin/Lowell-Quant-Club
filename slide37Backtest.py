@@ -2,8 +2,7 @@ import yfinance
 import finta
 from matplotlib import pyplot as plt
 import math
-import numpy as np
-import statistics
+
 
 data = yfinance.download("SPY", period="30y", interval="1d")
 data["ATR"] = finta.TA.ATR(data, 5)
