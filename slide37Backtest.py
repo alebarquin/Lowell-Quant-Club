@@ -16,11 +16,11 @@ currentPosition = 0
 # Specifies start date for simulation. ex: 100 -> starts from 100th day in data.
 startingIndex = 100
 
-# Last crossover position (price vs moving average)
-# lookForSignal specifies if I should be looking for an entry signal.
+# The location of the last known crossover event (where the price swapped position relative to moving average ex. from above to below)
 lastCrossover = "unknown"
 
 
+# lookForSignal specifies if I should be looking for an entry signal.
 # For example, if a crossover just occured, I am looking for the two highs / lows pattern, variable is True.
 # If a signal was already spotted, and I'm awaiting price to trigger my entry, variable is False.
 lookForSignal = False
