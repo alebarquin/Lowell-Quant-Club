@@ -312,7 +312,7 @@ for n in range(startingIndex, len(data.index)):
                             1 - spread / 2
                         )
                         cashEquity -= currentShares * entryTriggerPrice
-                        shareEquity += currentShares * entryTriggerPrice
+                        shareEquity += (currentShares * entryTriggerPrice) * (1 - spread / 2) # the funds allocated to shares lose a percent to transaction fees.
                         currentEquity = cashEquity + shareEquity
                         lastEntryPrice = entryTriggerPrice
                         placeTrade = False
@@ -321,10 +321,10 @@ for n in range(startingIndex, len(data.index)):
                     if data["Low"][realDate] <= entryTriggerPrice:
                         currentPosition = -1
                         currentShares = (
-                            currentEquity / entryTriggerPrice * (1 - spread / 2)
+                            currentEquity / entryTriggerPrice 
                         )
                         cashEquity -= currentShares * entryTriggerPrice
-                        shareEquity += currentShares * entryTriggerPrice
+                        shareEquity += (currentShares * entryTriggerPrice) * (1 - spread / 2)
                         currentEquity = cashEquity + shareEquity
                         lastEntryPrice = entryTriggerPrice
                         placeTrade = False
