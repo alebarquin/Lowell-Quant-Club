@@ -295,7 +295,6 @@ for n in range(startingIndex, len(data.index)):
             # Look for an entry signal.
             if lookForSignal:
                 (
-                    entryIndexPosition,
                     entryTriggerPrice,
                     placeTrade,
                     lookForSignal,
