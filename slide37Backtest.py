@@ -185,7 +185,7 @@ def entrySignal(_lastCrossover, _currentIndexPosition, _data):
                 signal += 1
                 extremes.append(_data["High"][signalIndex])
             if signal == 2:
-                _entryPrice = max(extremes) + 0.2 * data["ATR"][signalIndex]
+                _entryPrice = max(extremes) + 0.2 * _data["ATR"][signalIndex]
                 signalFound = True
                 break
 
@@ -199,7 +199,7 @@ def entrySignal(_lastCrossover, _currentIndexPosition, _data):
                 signal += 1
                 extremes.append(_data["Low"][signalIndex])
             if signal == 2:
-                _entryPrice = min(extremes) - 0.2 * data["ATR"][signalIndex]
+                _entryPrice = min(extremes) - 0.2 * _data["ATR"][signalIndex]
                 signalFound = True
                 break
 
