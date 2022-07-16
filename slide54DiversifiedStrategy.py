@@ -11,6 +11,7 @@ assetList = [
     "GLD",
     "QQQ",
 ]  # Input desired assets here. The start date of the test will begin at the latest start date of the asset group.
+
 weights = [
     0.4,
     0.3,
@@ -129,7 +130,6 @@ def calculateEquity(
         else:
             _shareEquity = _currentShares * (_exitPrice) * (1 - _spread / 2)
 
-        # If stopped out, all share equity is converted to cash:
         _cashEquity += _shareEquity
         _shareEquity = 0
     else:
