@@ -219,7 +219,6 @@ def entrySignal(_lastCrossover, _currentIndexPosition, _data):
         _lookForSignal = True
 
     return (
-        signalIndexPosition,
         _entryPrice,
         _placeTrade,
         _lookForSignal,
