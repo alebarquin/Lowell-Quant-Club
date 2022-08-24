@@ -16,16 +16,6 @@ df = yfinance.download(
     group_by="ticker",
 )
 
-# Add dividends
-for n in tickers:
-    asset = yfinance.Ticker(n)  # Create a ticker object
-    divDf = asset.dividends  # Download dividend data for the ticker object
-    divDf = divDf.reindex_like(df).fillna(
-        0
-    )  # Give the dividend table the same index as the main table and fill non existing values with 0
-    df[(n, "Close")] = (
-        divDf + df[(n, "Close")]
-    )  # Now that indeces match, we can add the two columns
 
 # Create a new data frame and populate it with only the close columns
 newdf = pd.DataFrame()
@@ -36,6 +26,17 @@ for n in tickers:
 # Convert dollar changes to percent changes and drop the first row
 newdf = newdf.pct_change(1)
 newdf.drop(newdf.index[0], inplace=True)
+
+
+# Add dividends
+for n in tickers:
+    asset = yfinance.Ticker(n)  # Create a ticker object
+    divDf = asset.dividends  # Download dividend data for the ticker object
+    divDf = divDf.reindex_like(df).fillna(
+        0
+    )  # Give the dividend table the same index as the main table and fill non existing values with 0
+    newdf[n] = newdf[n] + divDf[1:] / df[(n, "Close")][1:] # Add the additional percent gains on the days where dividends were paid. 
+
 
 # Since some assets start earlier than others, we need to start at the point when all assets have data
 firstRealDate = []
