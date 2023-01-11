@@ -1,7 +1,7 @@
 import yfinance
 from matplotlib import pyplot as plt
 
-# This short program is a very inneficient demonstration of how dividends compound over time. 
+# This short program is a very inneficient demonstration of how dividends compound over time.
 
 SPY = yfinance.Ticker("SPY")
 dividends = SPY.dividends
@@ -33,6 +33,7 @@ for date in spy_prices.index:
     spy_total_returns_graphY.append(totalEquity)
 
 # Plot asset returns vs asset returns with dividends reinvested
-plt.plot(spy_prices.index, spy_prices["Close"])
-plt.plot(spy_total_returns_graphX, spy_total_returns_graphY)
+plt.plot(spy_prices.index, spy_prices["Close"], label="SPY")
+plt.plot(spy_total_returns_graphX, spy_total_returns_graphY, label="SPY Total Return")
+plt.legend()
 plt.show()
