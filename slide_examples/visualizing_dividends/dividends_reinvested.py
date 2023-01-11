@@ -1,37 +1,38 @@
 import yfinance
 from matplotlib import pyplot as plt
 
+# This short program is a very inneficient demonstration of how dividends compound over time. 
 
 SPY = yfinance.Ticker("SPY")
 dividends = SPY.dividends
-prices = yfinance.download("SPY", period="Max")
+spy_prices = yfinance.download("SPY", period="Max")
 
-cashEquity = prices["Close"][prices.index[0]]
+cashEquity = spy_prices["Close"][spy_prices.index[0]]
 shareEquity = 0
 totalEquity = cashEquity + shareEquity
 shares = 0
 
-returnsX = []
-returnsY = []
+spy_total_returns_graphX = []
+spy_total_returns_graphY = []
 
-for n in prices.index:
+for date in spy_prices.index:
 
     # Check to see if dividends were paid out
-    if n in dividends.index:
-        cashEquity += dividends[n] * shares
+    if date in dividends.index:
+        cashEquity += dividends[date] * shares
 
     # Reinvest all excess cash into shares
     if cashEquity != 0:
-        shares += cashEquity / prices["Close"][n]
+        shares += cashEquity / spy_prices["Close"][date]
         cashEquity = 0
 
-    shareEquity = shares * prices["Close"][n]
+    shareEquity = shares * spy_prices["Close"][date]
     totalEquity = shareEquity + cashEquity
 
-    returnsX.append(n)
-    returnsY.append(totalEquity)
+    spy_total_returns_graphX.append(date)
+    spy_total_returns_graphY.append(totalEquity)
 
 # Plot asset returns vs asset returns with dividends reinvested
-plt.plot(prices.index, prices["Close"])
-plt.plot(returnsX, returnsY)
+plt.plot(spy_prices.index, spy_prices["Close"])
+plt.plot(spy_total_returns_graphX, spy_total_returns_graphY)
 plt.show()
