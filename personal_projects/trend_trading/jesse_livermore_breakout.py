@@ -69,7 +69,6 @@ spy_dividends = yf_spy_ticker.dividends
 # Creating a second table, where the closing prices are adjusted for dividends. This will be used to calculate raw performance.
 # The values will only be updated after the backtest begins to maintain equal starting capital based on share price.
 spy_performance_dividendAdj = yfinance.download("SPY", period="20y")
-starting_date = spy_data.index[0]
 
 for div_date in spy_dividends.index:
     if div_date > backtest_date:
