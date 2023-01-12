@@ -11,6 +11,8 @@ Coca-Cola Example:
 ![image](https://user-images.githubusercontent.com/102199762/212189098-71c8ae4f-076a-4452-80f2-e9adbe1d3298.png)
 ![image](https://user-images.githubusercontent.com/102199762/212190181-6a0d4eca-ae68-4b1f-a035-c5456fa38e02.png)
 200 Day Smoothed Average Correlation Matrix:
+</br>
 [[ 1.         -0.71376952]
+</br>
  [-0.71376952  1.        ]]
  
