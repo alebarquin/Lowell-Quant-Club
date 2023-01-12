@@ -11,3 +11,6 @@ One of the first algorithms I ever backtested. The system is a simple version of
 	</br>
   </br>
   While the backtest shows very strong performance, the low trade sample size and the numerous variables that I tweaked makes this almost certainly overfit. However, in combination with additional fundamental measures, the idea of creating a portfolio of already strong stocks and filtering out broad market trends would seem to follow all general investing principles. 
+
+![Screenshot (144)](https://user-images.githubusercontent.com/102199762/211978177-778ebb3a-0414-4e98-aac8-4c96f03874c6.png)
+![Screenshot (155)](https://user-images.githubusercontent.com/102199762/211978189-bef89e05-16ff-4287-8275-437d2bd94ccc.png)
