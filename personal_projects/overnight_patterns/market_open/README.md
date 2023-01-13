@@ -1,4 +1,4 @@
-Below is a demonstration of the returns during market open for Ford stock. 
+Below is a demonstration of the returns during market open for Ford stock. Some of the code above will require intraday market data for further testing. I can only provide the table used for Ford in the example below. 
 </br>
 </br>
 In this example, the day is divided into 5 minutes subsections, who's average return over time is represented using the bar graph below. The cumulative returns of the first 4 subsections are also graphed below it.
