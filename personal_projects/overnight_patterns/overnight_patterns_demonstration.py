@@ -149,8 +149,8 @@ for n in range(len(intraday_returns_graphX)):
     else:
         monday_intraday_returns.append(intraday_returns_graphY[n])
 
-smooth_period = 100
-weekend_smooth_period = 100
+smooth_period = 200
+weekend_smooth_period = 200
 
 smoothed_overnight_returns = list(
     pd.Series(overnight_returns_graphY).rolling(smooth_period).mean()
@@ -186,9 +186,17 @@ smoothed_weekend_returns = [
 print("Overnight and Intraday Smoothed Weekday Correlation")
 print(np.corrcoef(smoothed_overnight_returns, smoothed_intraday_returns_no_monday))
 plt.scatter(smoothed_overnight_returns, smoothed_intraday_returns_no_monday)
+
+plt.title("Overnight vs Intraday")
+plt.xlabel("Overnight Returns")
+plt.ylabel("Intraday Returns")
 plt.show()
 
 print("Weekend and Monday Intraday Smoothed Correlation")
 print(np.corrcoef(smoothed_weekend_returns, smoothed_intraday_returns_monday))
 plt.scatter(smoothed_weekend_returns, smoothed_intraday_returns_monday)
+
+plt.title("Weekend vs Monday Intraday")
+plt.xlabel("Weekend Returns")
+plt.ylabel("Intrady Monday Returns")
 plt.show()
