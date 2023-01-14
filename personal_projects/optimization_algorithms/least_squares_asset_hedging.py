@@ -65,9 +65,8 @@ target_ticker_percent_data = target_ticker_close_data.pct_change(1)
 target_ticker_percent_data.drop(target_ticker_percent_data.index[0], inplace=True)
 
 # Find the earliest date that contains data for all stocks
-asset_names = tickers
 earliest_dates = []
-for asset in asset_names:
+for asset in tickers:
     if tickers_percent_data[asset].first_valid_index() != None:
         earliest_dates.append(tickers_percent_data[asset].first_valid_index())
     else:
@@ -76,7 +75,7 @@ for asset in asset_names:
 earliest_dates.append(target_ticker_percent_data.first_valid_index())
 
 # Update asset list to exclude stocks for whom no data was returned
-asset_names = list(tickers_percent_data)
+tickers = list(tickers_percent_data)
 
 # Remove all data before earliest date
 tickers_percent_data = tickers_percent_data.truncate(before=max(earliest_dates))
