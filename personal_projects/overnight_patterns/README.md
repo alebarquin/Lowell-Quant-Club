@@ -22,7 +22,7 @@ Further Questions:
 What is the cause of these returns? (Some clues: the overnight returns broken down by weekdays appear similar across a wide variety of assets. The overnight/intraday symmetry is strongest in ranging SPACs. The overnight returns occur in small cap stocks with low volume and no options trading.)
 </br>
 </br>
-Are strong sell-offs at open present in stocks that mainly attract retail traders who are not aware of overnight trends. 
+Are strong sell-offs at open present in stocks that mainly attract retail traders who are not aware of overnight trends? 
 </br>
 </br>
 Some large assets (ex. QYLD) already show that overnight returns outweigh morning sell-offs. Is it practical to use limit orders to avoid spreads and capture this profitably, or are fills ate the midpoint too difficult to achieve consistently?
