@@ -185,16 +185,18 @@ backtest_data.rename({0: "Optimal_Solution"}, axis=1, inplace=True)
 plt.plot(
     backtest_data.index,
     (backtest_data["Optimal_Solution"] + 1).cumprod() - 1,
+    label="Optimal Solution",
 )
 
 # Plot target returns
 plt.plot(
     backtest_data.index,
     (target_ticker_percent_data + 1).cumprod() - 1,
+    label=target_ticker,
 )
 
 plt.ylabel("Decimal Change (% * 100)")
 plt.xlabel("Date")
 
-plt.legend(["Optimal_Solution", target_ticker], loc="upper left")
+plt.legend()
 plt.show()
