@@ -57,6 +57,25 @@ for ticker in tickers:
 
 target_ticker_close_data = target_ticker_data["Close"]
 
+# Find the earliest date that contains data for all stocks
+earliest_dates = []
+for asset in tickers:
+    if tickers_close_data[asset].first_valid_index() != None:
+        earliest_dates.append(tickers_close_data[asset].first_valid_index())
+    else:
+        tickers_close_data = tickers_close_data.drop(asset, 1)
+
+earliest_dates.append(target_ticker_close_data.first_valid_index())
+
+# Update asset list to exclude stocks for whom no data was returned
+tickers = list(tickers_close_data)
+
+# Remove all data before earliest date
+tickers_close_data = tickers_close_data.truncate(before=max(earliest_dates))
+target_ticker_close_data = target_ticker_close_data.truncate(
+    before=max(earliest_dates)
+)
+
 # Convert dollar changes to percent changes and drop the first row
 tickers_percent_data = tickers_close_data.pct_change(1)
 tickers_percent_data.drop(tickers_percent_data.index[0], inplace=True)
@@ -64,24 +83,6 @@ tickers_percent_data.drop(tickers_percent_data.index[0], inplace=True)
 target_ticker_percent_data = target_ticker_close_data.pct_change(1)
 target_ticker_percent_data.drop(target_ticker_percent_data.index[0], inplace=True)
 
-# Find the earliest date that contains data for all stocks
-earliest_dates = []
-for asset in tickers:
-    if tickers_percent_data[asset].first_valid_index() != None:
-        earliest_dates.append(tickers_percent_data[asset].first_valid_index())
-    else:
-        tickers_percent_data = tickers_percent_data.drop(asset, 1)
-
-earliest_dates.append(target_ticker_percent_data.first_valid_index())
-
-# Update asset list to exclude stocks for whom no data was returned
-tickers = list(tickers_percent_data)
-
-# Remove all data before earliest date
-tickers_percent_data = tickers_percent_data.truncate(before=max(earliest_dates))
-target_ticker_percent_data = target_ticker_percent_data.truncate(
-    before=max(earliest_dates)
-)
 
 # For simplicity, dividends are excluded. Any practical applicatino of this algorithm will require additional code to account for dividends.
 
