@@ -4,8 +4,10 @@ Above is an example of how options could be used to leverage the returns present
 In non-leveraged pairs, the difference between the synthetic position and shares deviate gradually at approximately the rate of returns that I am trying to capture. 
 </br>
 </br>
-In order to experiment with your own contracts, retrieve your Robinhood auth token by interacting the with webpage while logged into your account, and inspecting the networks tab.
-Then find a pair of active options contracts with a lengthy history that can be analyzed. The closer they are to the strike, the higher the volume, and the more realistically they can be traded.
+In order to experiment with your own contracts, retrieve your Robinhood auth token by interacting the with webpage while logged into your account, and inspecting the networks tab. Find a request that carriers the token in its header.
+</br>
+</br>
+Then find a pair of active options contracts with a lengthy history that can be analyzed. The closer they are to the strike, the higher the volume, the more realistically they can be traded.
 </br>
 </br>
 Below is an example of the TQQQ and SQQQ pair:
