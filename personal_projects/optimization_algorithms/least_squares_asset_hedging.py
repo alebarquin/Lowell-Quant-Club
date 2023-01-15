@@ -72,9 +72,7 @@ tickers = list(tickers_close_data)
 
 # Remove all data before earliest date
 tickers_close_data = tickers_close_data.truncate(before=max(earliest_dates))
-target_ticker_close_data = target_ticker_close_data.truncate(
-    before=max(earliest_dates)
-)
+target_ticker_close_data = target_ticker_close_data.truncate(before=max(earliest_dates))
 
 # Convert dollar changes to percent changes and drop the first row
 tickers_percent_data = tickers_close_data.pct_change(1)
@@ -183,22 +181,16 @@ backtest_data = pd.concat(
 )
 backtest_data.rename({0: "Optimal_Solution"}, axis=1, inplace=True)
 
-backtest_data.fillna(0, inplace=True)
-
-# The starting point of the optimal equity
-starting_date = backtest_data["Optimal_Solution"].ne(0).idxmax()
-starting_location = backtest_data.index.get_loc(starting_date)
-
 # Plot optimal solution
 plt.plot(
-    backtest_data.index[starting_location:],
-    (backtest_data["Optimal_Solution"][starting_date:] + 1).cumprod() - 1,
+    backtest_data.index,
+    (backtest_data["Optimal_Solution"] + 1).cumprod() - 1,
 )
 
 # Plot target returns
 plt.plot(
-    backtest_data.index[starting_location:],
-    (target_ticker_percent_data[starting_date:] + 1).cumprod() - 1,
+    backtest_data.index,
+    (target_ticker_percent_data + 1).cumprod() - 1,
 )
 
 plt.ylabel("Decimal Change (% * 100)")
