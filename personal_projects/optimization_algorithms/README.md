@@ -8,6 +8,10 @@ Volatility minimization for a 4 asset portfolio: ["SPY", "QQQ", "TLT", "GLD"] ->
 A second script is used to find a portfolio that minimizes the distance to a target returns curve. This is used to find a unique combination of assets that can hedge a second target asset.
 </br>
 </br>
+Custom portfolio optimized to mimic the movements of SPY.
+![image](https://user-images.githubusercontent.com/102199762/212568960-1b6ea9d8-c439-45ad-9b5b-6e0b06610600.png)
+</br>
+</br>
 Further Questions:
 </br>
 </br>
