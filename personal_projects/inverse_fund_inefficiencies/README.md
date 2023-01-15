@@ -43,7 +43,7 @@ Further Questions:
 Why does this occur? 
 </br>
 </br>
-Do short borrowing costs erode any opportunity for profits? Why weren't they visible in the options market?
+Do short borrowing costs erode any opportunity for profits when rates are low? Why weren't they visible in the options market?
 </br>
 </br>
 Why do only some options price in these divergences?
