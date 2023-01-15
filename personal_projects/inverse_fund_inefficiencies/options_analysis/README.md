@@ -11,7 +11,7 @@ Then find a pair of active options contracts with a lengthy history that can be 
 Below is an example of the TQQQ and SQQQ pair:
 </br>
 </br>
-![Screenshot (163)](https://user-images.githubusercontent.com/102199762/212566628-15328acb-2774-4c2f-9260-4ec131fae956.png)
+![Screenshot (164)](https://user-images.githubusercontent.com/102199762/212566791-1a4d323b-dac8-4ded-bac6-93ed42ddb75b.png)
 </br>
 </br>
 ![Screenshot (165)](https://user-images.githubusercontent.com/102199762/212566635-7f7525fa-9542-4fb0-a176-d0cee0d4e4da.png)
