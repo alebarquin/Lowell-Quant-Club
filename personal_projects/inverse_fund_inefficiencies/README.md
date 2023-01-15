@@ -1,4 +1,4 @@
-While experimenting with both overnight returns and the hedging algorithms, I noticed that long and inverse fund returns tend to diverge. Above is a script that demonstrates this, but make sure to add the necessary changes everywhere in the code if changing the list of assets. 
+While experimenting with both overnight returns and the hedging algorithms, I noticed that long and inverse funds fail to hedge one another even on a single day time range. Above is a script that demonstrates this, but make sure to add the necessary changes everywhere in the code if changing the list of assets. 
 </br>
 </br>
 A few important observations/notes: 
