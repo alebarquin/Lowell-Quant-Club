@@ -103,7 +103,7 @@ def calcAndPlot(_ticker, _strike, _exp, _start_analysis):
     return call_changes, put_changes, ticker_price_changes, graph_x_axis
 
 
-# Compare a portfolio composed of SQQQ and TQQQ options.
+# Compare a portfolio composed of asset 1 and asset 2 options.
 # Specify the contract detials in the function arguments below: ticker, strike, exp, start of analysis.
 # Data is only available for active contracts.
 
