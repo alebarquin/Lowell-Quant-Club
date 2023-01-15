@@ -200,5 +200,8 @@ plt.plot(
     (target_ticker_percent_data[starting_date:] + 1).cumprod() - 1,
 )
 
+plt.ylabel("Decimal Change (% * 100)")
+plt.xlabel("Date")
+
 plt.legend(["Optimal_Solution", target_ticker], loc="upper left")
 plt.show()
