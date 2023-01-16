@@ -13,7 +13,7 @@ The divergence that occurs expands and contracts with interest rates, where a lo
 The higher the leverage of the funds, the less affected they are by rising rates. Instead they show consistent decline, only occasionally leveling out. 
 </br>
 </br>
-The consistent smooth returns are generated when the chaotic returns at open are paired with the chaotic returns overnight.
+The consistent smooth returns can be broken down into chaotic overnight and market open returns, which balance very nicely.
 </br>
 </br>
 Because these stable returns were recreated with stocks, the immediate question was whether they can be leveraged with instruments like options. The test code is provided above. I observed that synthetic long positions for non-leveraged fund pairs did not generate profits or losses (SPY+SH). On the other hand synthetic short positions seemed to generate profits for leveraged fund pairs (SQQQ+TQQQ), although not nearly as steadily as a position in stocks. 
