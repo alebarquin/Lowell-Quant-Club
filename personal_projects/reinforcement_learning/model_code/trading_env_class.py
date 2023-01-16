@@ -7,13 +7,13 @@ from matplotlib import pyplot as plt
 
 
 class UpdatedTradingEnv(TradingEnv):
+
     def __init__(self, df, window_size):
         super().__init__(df, window_size)
         # Update the observation space
         self.observation_space = spaces.Box(
             low=-1, high=1, shape=self.shape, dtype=np.float32
         )
-        print(self.observation_space)
 
     def step(self, action):
         self._done = False
@@ -57,7 +57,10 @@ class UpdatedTradingEnv(TradingEnv):
 
     def render_all(self, mode="human"):
         window_ticks = np.arange(len(self._position_history))
-        plt.plot(self.prices)
+        graph_x_axis = self.df.index[self.frame_bound[0] -
+                                     self.window_size:self.frame_bound[1]]
+
+        plt.plot(graph_x_axis, self.prices)
 
         short_ticks = []
         long_ticks = []
@@ -67,8 +70,8 @@ class UpdatedTradingEnv(TradingEnv):
             elif self._position_history[i] == Positions.Long:
                 long_ticks.append(tick - 1)
 
-        plt.plot(short_ticks, self.prices[short_ticks], "ro")
-        plt.plot(long_ticks, self.prices[long_ticks], "go")
+        plt.plot(graph_x_axis[short_ticks], self.prices[short_ticks], "ro")
+        plt.plot(graph_x_axis[long_ticks], self.prices[long_ticks], "go")
 
         plt.suptitle(
             "Total Reward: %.6f" % self._total_reward
@@ -137,7 +140,7 @@ class UpdatedStockEnv(UpdatedTradingEnv):
 
         self.bars = self.df.index[data_start:data_end]
 
-        normalized_data = self._calculate_data_bounds(indicator_list)
+        normalized_data = list(self._calculate_data_bounds(indicator_list))
         signal_features = np.column_stack(
             normalized_data)
 
