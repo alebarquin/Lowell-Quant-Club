@@ -1,3 +1,6 @@
+I don't think this one is that interesting, but the results weren't bad so I'll include it. 
+	</br>
+  </br>
 One of the first algorithms I ever backtested. The system is a simple version of trend trading, based on the principles of Jesse Livermore, a successful day trader who operated pre 1940s, and who was interviewed for the book “Reminiscences of a Stock Operator.”
 	</br>
   </br>
