@@ -1,2 +1,2 @@
 # Lowell-Quant-Club
-Lowell Quant Trading club sample projects and other examples. 
+Personal market research and some examples featured in our club meetings. 
