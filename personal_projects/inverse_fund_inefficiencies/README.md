@@ -1,4 +1,4 @@
-While experimenting with both overnight returns and the hedging algorithms, I noticed that long and inverse funds fail to hedge one another even on a single day time range. Above is a script that demonstrates this, but make sure to add the necessary changes everywhere in the code if changing the list of assets. 
+While experimenting with both overnight returns and the hedging algorithms, I noticed that long and inverse funds fail to hedge one another. I am not referencing the fact that they diverge over time because they track single day returns, but rather that they diverge even on a single day time range. Above is a script that demonstrates this, but make sure look through all the code to make necessary changes everywhere. 
 </br>
 </br>
 A few important observations/notes: 
@@ -7,7 +7,7 @@ A few important observations/notes:
 These funds track only single day returns, therefore a theoretical perfect hedge between a long and short fund requires daily rebalancing. 
 </br>
 </br>
-The divergence that occurs expands and contracts with interest rates, where a long position in both a long and short fund generates profit at roughly the risk-free rate, and incures losses when rates reach lower levels. This rate also affects the stability of the returns. 
+The divergence that occurs expands and contracts with interest rates, where a long position in both a long and short fund generates profit at roughly the risk-free rate, and incures losses when rates reach lower levels. The interest rates also affect the stability of the returns. 
 </br>
 </br>
 The higher the leverage of the funds, the less affected they are by rising rates. Instead they show consistent decline, only occasionally leveling out. 
@@ -16,7 +16,7 @@ The higher the leverage of the funds, the less affected they are by rising rates
 The consistent smooth returns are generated when the chaotic returns at open are paired with the chaotic returns overnight.
 </br>
 </br>
-Because these stable returns were recreated with stocks, the immediate question was whether they can be leveraged with instruments such as options. The test code is provided above. With the messy data that I had, I observed that synthetic long positions for non-leveraged fund pairs did not generate profits or losses (SPY+SH). On the other hand synthetic short positions seemed to generate profits for leveraged fund pairs (SQQQ+TQQQ), although not nearly as steadily as a position in stocks. '
+Because these stable returns were recreated with stocks, the immediate question was whether they can be leveraged with instruments like options. The test code is provided above. I observed that synthetic long positions for non-leveraged fund pairs did not generate profits or losses (SPY+SH). On the other hand synthetic short positions seemed to generate profits for leveraged fund pairs (SQQQ+TQQQ), although not nearly as steadily as a position in stocks. 
 
 </br>
 </br>
@@ -43,7 +43,7 @@ Further Questions:
 Why does this occur? 
 </br>
 </br>
-Do short borrowing costs erode any opportunity for profits when rates are low? Why weren't they visible in the options market?
+Do short borrowing costs erode any opportunity for profits when rates are low? Why weren't they reflected in the options market?
 </br>
 </br>
 Why do only some options price in these divergences?
