@@ -25,4 +25,4 @@ What is the cause of these returns? (Some clues: the overnight returns broken do
 Are strong sell-offs at open present in stocks that mainly attract retail traders who are not aware of overnight trends? 
 </br>
 </br>
-Some large assets (ex. QYLD) already show that overnight returns outweigh morning sell-offs. Is it practical to use limit orders to avoid spreads and capture this profitably, or are fills ate the midpoint too difficult to achieve consistently?
+Some large assets (ex. QYLD) already show that overnight returns outweigh morning sell-offs. Is it practical to use limit orders to avoid spreads and capture this profitably, or are fills at the midpoint too difficult to achieve consistently?
