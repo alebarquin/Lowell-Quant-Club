@@ -40,17 +40,17 @@ print(minute_data)
 
 # Set window size and training range. Start away from 0 to give room for indicator calculation
 window = 30
-t1 = 300
-t2 = 666000
+lower_train_bound = 300
+upper_train_bound = 666000
 
 # Corresponding dates
-print(minute_data.index[t1])
-print(minute_data.index[t2])
+print(minute_data.index[lower_train_bound])
+print(minute_data.index[upper_train_bound])
 
 
-# Create the training environment. Training frame bound is equal to frame bound when training.
+# Create the training environment. Training frame bound is equal to data range present in training.
 training_environment = UpdatedStockEnv(df=minute_data, window_size=window, frame_bound=(
-    t1, t2), training_frame_bound=(t1, t2))
+    lower_train_bound, upper_train_bound), training_frame_bound=(lower_train_bound, upper_train_bound))
 
 # God know what this does
 
