@@ -52,7 +52,4 @@ Other inputs to include?
 Better training method? Hyperparameter tuning?
 </br>
 </br>
-Other forms of training methods?
-</br>
-</br>
 Visualizing the decision logic of the algorithm to describe crowd psychology?
