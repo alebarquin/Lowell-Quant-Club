@@ -9,169 +9,187 @@ from matplotlib import pyplot as plt
 # Downloading data
 tickers = ["SPY", "QQQ", "TLT", "GLD"]
 
-df = yfinance.download(
+ticker_data = yfinance.download(
     tickers,
     start=datetime.datetime(2000, 1, 1),
-    end=datetime.datetime(2022, 8, 1),
     group_by="ticker",
 )
 
 
 # Create a new data frame and populate it with only the close columns
-newdf = pd.DataFrame()
+ticker_data_close = pd.DataFrame()
 
 for n in tickers:
-    newdf[n] = df[(n, "Close")]
-
-# Convert dollar changes to percent changes and drop the first row
-newdf = newdf.pct_change(1)
-newdf.drop(newdf.index[0], inplace=True)
-
-
-# Add dividends
-for n in tickers:
-    asset = yfinance.Ticker(n)  # Create a ticker object
-    divDf = asset.dividends  # Download dividend data for the ticker object
-    divDf = divDf.reindex_like(df).fillna(
-        0
-    )  # Give the dividend table the same index as the main table and fill non existing values with 0
-    newdf[n] = newdf[n] + divDf[1:] / df[(n, "Close")][1:] # Add the additional percent gains on the days where dividends were paid. 
+    ticker_data_close[n] = ticker_data[(n, "Close")]
 
 
 # Since some assets start earlier than others, we need to start at the point when all assets have data
-firstRealDate = []
-for n in list(newdf):
-    firstRealDate.append(newdf[n].first_valid_index())
+earliest_date = []
+for n in list(ticker_data_close):
+    earliest_date.append(ticker_data_close[n].first_valid_index())
 
-newdf = newdf.truncate(before=max(firstRealDate))
-print(newdf)
+ticker_data_close = ticker_data_close.truncate(before=max(earliest_date))
+ticker_data = ticker_data.truncate(before=max(earliest_date))
+
+# Convert dollar changes to percent changes and drop the first row
+ticker_data_percent = ticker_data_close.pct_change(1)
+ticker_data_percent.drop(ticker_data_percent.index[0], inplace=True)
+
+# Add dividends
+for ticker in tickers:
+    asset = yfinance.Ticker(ticker)
+    dividend_history = asset.dividends
+
+    if len(dividend_history) == 0:
+        continue
+    dividend_history = dividend_history.reindex_like(ticker_data_percent).fillna(0)
+
+    # Note, division is arranged so that the percent is calculated relative to the close prior to ex-date, since that is how overnight losses
+    # due to sell-offs are calculated as well.
+    ticker_data_percent[ticker] = ticker_data_percent[
+        ticker
+    ] + dividend_history / np.array(ticker_data[(ticker, "Close")][:-1])
+
 
 # ---------------------- #
 
 # The sympy math starts here
 
+# Subset of ticker list, in case you want to exclude some tickers from the main list.
+asset_names = ["SPY", "QQQ", "TLT", "GLD"]
+length_of_assets = len(asset_names)
 
-assetNames = ["SPY", "QQQ", "TLT", "GLD"]
-assetsLength = len(assetNames)
-
-covM = newdf[assetNames].cov()  # Covariance matrix
+covariance_matrix = ticker_data_percent[asset_names].cov()
 pprint("Covariance Matrix: ")
-pprint(covM)
+pprint(covariance_matrix)
 pprint("---------------")
 
 # Create list of sympy symbols for each weight and our two constraints
-symbols = []
-for n in range(0, assetsLength):
-    symbols.append(sympy.Symbol("w" + str(n), real=True))
+equation_variables = []
+for ticker_position in range(length_of_assets):
+    equation_variables.append(sympy.Symbol("w" + str(ticker_position), real=True))
 
-symbols.append(sympy.Symbol("Lm1", real=True))
-symbols.append(sympy.Symbol("Lm2", real=True))
+# Append lambda variables for contraints
+equation_variables.append(sympy.Symbol("lambda1", real=True))
+equation_variables.append(sympy.Symbol("lambda2", real=True))
 
-# Create our weights matrix
-Weights = []
-for n in range(0, assetsLength):
-    Weights.append(symbols[n])
+# Isolate the variables representing the asset weights
+asset_weights = []
+for n in range(0, length_of_assets):
+    asset_weights.append(equation_variables[n])
 
 # Reshape the matrix to be vertical. -1 indicates that the rows should be whatever value fits as long as the columns is 1.
-Weights = np.array(Weights).reshape(-1, 1)
-WeightsT = np.transpose(Weights)
+asset_weights = np.array(asset_weights).reshape(-1, 1)
+asset_weights_T = np.transpose(asset_weights)
 
 
 # Portfolio variance function, main function to minimize
-f = WeightsT @ covM @ Weights
-f = f[0][
-    0
-]  # f is nested in multiple lists, so we have to index it to get the actual expression.
+portfolio_variance = asset_weights_T @ covariance_matrix @ asset_weights
+portfolio_variance = portfolio_variance[0][0]  # Strip outer brackets
+
 pprint("Variance function: ")
-pprint(f)
+pprint(portfolio_variance)
 pprint("---------------")
 
-# Constraint 1: Sum of the absolute weights must equal 1. Review matrix multiplication to understand the function.
-onesVector = np.ones((1, Weights.shape[0]))
-g = onesVector @ abs(Weights)
-pprint("Constraint 1 Must Equal 1: ")
-pprint(g)
+# Constraint 1: Sum of the absolute weights must equal 1.
+ones_vector = np.ones((1, asset_weights.shape[0]))
+weight_sum_constraint = ones_vector @ abs(asset_weights)
+pprint("Sum of weights must equal 1 constraint: ")
+pprint(weight_sum_constraint)
 pprint("---------------")
 
 # Calculate an array of corresponding average daily returns based off of the columns of the data table.
-ExpectedAssetReturns = np.array(newdf.mean(axis=0)[assetNames]).reshape(-1, 1)
-pprint("Expected Returns: " + str(ExpectedAssetReturns))
+expected_portfolio_returns = np.array(
+    ticker_data_percent.mean(axis=0)[asset_names]
+).reshape(-1, 1)
+pprint("Expected Returns: " + str(expected_portfolio_returns))
 pprint("---------------")
-ExpectedPortfolioReturns = newdf.mean(axis=0)["SPY"] * 1  # Set returns target
-pprint("Target Return: " + str(ExpectedPortfolioReturns))
+
+target_portfolio_returns = (
+    ticker_data_percent.mean(axis=0)["SPY"] * 1
+)  # Set target return
+pprint("Target Return: " + str(target_portfolio_returns))
 pprint("---------------")
 
 # Constraint 2: The sum of each weight multiplied with its corresponding return must equal our target return
-h = WeightsT @ ExpectedAssetReturns
-pprint("Constraint 2 Equals Target Return: ")
-pprint(h)
+portfolio_returns_constraint = asset_weights_T @ expected_portfolio_returns
+pprint("Portfolio return must meet target: ")
+pprint(portfolio_returns_constraint)
 pprint("---------------")
 
-Lm1 = symbols[
-    assetsLength
-]  # Assets length is the number of assets we have. For a 0 indexed list, that means the first lagrange multiplier is located at
-# that position: ex. 2 assets: [w1, w2, Lm1, Lm2], where w1 is at pos. 0 etc. and Lm1 starts at position 2.
-Lm2 = symbols[assetsLength + 1]
+lambda1 = equation_variables[length_of_assets]
+lambda2 = equation_variables[length_of_assets + 1]
 
 
 # Defining and finding the gradient of the lagrangian with both constraints active
-lagrangian = f - Lm1 * (g - 1) - Lm2 * (h - ExpectedPortfolioReturns)
-lagrangian = lagrangian[0][0]
-pprint("lagrangian: ")
-pprint(lagrangian)
+lagrangian_function = (
+    portfolio_variance
+    - lambda1 * (weight_sum_constraint - 1)
+    - lambda2 * (portfolio_returns_constraint - expected_portfolio_returns)
+)
+lagrangian_function = lagrangian_function[0][0]
+
+pprint("The Lagrangian: ")
+pprint(lagrangian_function)
 pprint("---------------")
 
 
-sysEquations = []
+system_of_equations = []
 
-# Calculate partial derivatives of all weights and then lagrange multipliers
-for w in symbols[:-2]:
+# Calculate partial derivatives wrt to all weights and lambdas
+for variable in equation_variables[:-2]:
 
-    der = sympy.diff(lagrangian, w)
-    # The derivative of abs(w) is w / abs(w)... which is really just 1 or -1 depending on the sign of w. Sympy expresses this with
-    # the sign(w) function, but that won't work with the equation solver, so we substitute the original w / abs(w)
-    derOfAbs = w / abs(w)
-    der = der.replace(sympy.sign(w), derOfAbs)
-    sysEquations.append(der)
+    partial_derivative = sympy.diff(lagrangian_function, variable)
 
-sysEquations.append(sympy.diff(lagrangian, Lm1))
-sysEquations.append(sympy.diff(lagrangian, Lm2))
+    # Equation solver fails to parse sign(x) representation of derivative of abs(x), therefore replace all sign(x) with x/(abs(x))
+    derivative_of_abs = variable / abs(variable)
+    partial_derivative = partial_derivative.replace(
+        sympy.sign(variable), derivative_of_abs
+    )
+    system_of_equations.append(partial_derivative)
+
+system_of_equations.append(sympy.diff(lagrangian_function, lambda1))
+system_of_equations.append(sympy.diff(lagrangian_function, lambda2))
 
 pprint("System of Equations: ")
-pprint(sysEquations)
+pprint(system_of_equations)
 pprint("---------------")
 
-# Initial guess for all weights and lagrange multipliers
-guessV = []
-for n in range(0, assetsLength):
-    guessV.append(1 / assetsLength)
-guessV.append(0.5)
-guessV.append(0.5)
+# Initial guess for all weights
+initial_guess_vector = []
+for n in range(length_of_assets):
+    initial_guess_vector.append(1 / length_of_assets)
+
+# Initial guess for all lambdas
+initial_guess_vector.append(0.5)
+initial_guess_vector.append(0.5)
 
 
-solution = sympy.nsolve(sysEquations, symbols, guessV, verify=False)
+solution = sympy.nsolve(
+    system_of_equations, equation_variables, initial_guess_vector, verify=False
+)
 print(solution)
 
-
-solution = np.array(solution).reshape(-1, 1)[0:assetsLength]
+# Strip lambdas from solution
+solution = np.array(solution).reshape(-1, 1)[0:length_of_assets]
 solution = [float(x[0]) for x in solution]
 
-backtest = pd.concat([newdf, newdf[assetNames] @ solution], axis=1)
-backtest.rename({0: "Optimal"}, axis=1, inplace=True)
-
-backtest.fillna(0, inplace=True)
-print(backtest)
-
-
-startDate = (
-    backtest["Optimal"].ne(0).idxmax()
-)  # The starting point of the optimal equity
-startLoc = backtest.index.get_loc(startDate)
-
-assetNames.append("Optimal")
-plt.plot(
-    backtest.index[startLoc:],
-    (backtest[["Optimal", "SPY"]][startDate:] + 1).cumprod() - 1,
+backtest = pd.concat(
+    [ticker_data_percent, ticker_data_percent[asset_names] @ solution], axis=1
 )
-plt.legend(["Optimal", "SPY"], loc="upper left")
+backtest.rename({0: "Optimal_Portfolio"}, axis=1, inplace=True)
+
+# Plot SPY returns
+plt.plot(backtest.index, (backtest["SPY"] + 1).cumprod() - 1, label="SPY")
+
+# Plot Optimal Portfolio returns
+plt.plot(
+    backtest.index,
+    (backtest["Optimal_Portfolio"] + 1).cumprod() - 1,
+    label="Optimal Portfolio",
+)
+
+plt.legend()
+plt.xlabel("Decimal Returns (% * 100)")
+plt.ylabel("Date")
 plt.show()
