@@ -1,7 +1,7 @@
 I'll start off by saying that trying to systematically train and validate my models has been a complete disaster. The difference in performance is incredibly difficult to attribute to a single change, and in all honesty I have made so many mistakes along the way that starting from the complete beginning seems like the only option. Keep in mind that as of this moment, my understanding of these algorithms does not go far beyond the concept of gradient descent taught in a third semester calculus course. My understanding of statistics and linear algebra is mediocre. 
 </br>
 </br>
-I didn't have much interest in analyzing large timeframes since I was relatively confident they were driven more by macro news than some voodoo patterns, and I was curious whether there was any point in trying to analyze intraday price. 
+I didn't have much interest in analyzing large timeframes since I was relatively confident they were driven more by macro news than some voodoo patterns, but I was curious whether there was some pattern to intraday price movements. 
 </br>
 </br>
 I began by developing models for forex because low increment data was far more accessible. I have little to say about them except that I highly doubt anything I analyzed was accurate, but I hope to try again some time. 
