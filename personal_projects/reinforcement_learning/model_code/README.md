@@ -1,3 +1,8 @@
+Above is the code used to train and evaluate the models. This was all done in Python 3.7 with older dependencies whose versions I've included. 
+</br>
+</br>
+The model environment class inherits an open source class available in the gym_anytrading package. The training and validation is done using OpenAI Gym and a fork called StableBaselines that contains already tuned training algorithms. 
+
 Once again, my understanding of some of the functions are rather limited. 
 </br>
 </br>
