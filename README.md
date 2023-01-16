@@ -1,2 +1,2 @@
 # Lowell-Quant-Club
-Lowell quant trading club sample projects. 
+Lowell Quant Trading club sample projects and other examples. 
