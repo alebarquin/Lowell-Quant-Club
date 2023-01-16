@@ -1,1 +1,30 @@
+January 16, 2023
 
+Model type:
+A2C LSTMpolicy
+
+Model training range and window size:
+window = 30
+t1 = 300
+t2 = 666000
+
+Model reward function:
+if trade:
+    current_price = self.prices[self._current_tick]
+    last_trade_price = self.prices[self._last_trade_tick]
+    price_diff = (current_price - last_trade_price) / last_trade_price
+
+    # Modified to reward short positions as well
+    if self._position == Positions.Long:
+        step_reward += price_diff
+    else:
+        step_reward -= price_diff
+
+I did not try to exclude overnight returns.
+
+Model inputs:
+indicator_list = [
+            RSI, SMA_price_distance, MACD, MACD_signal, int_time]
+
+Data:
+Cleaned minute data for SPY ticker. Gaps are filled with a repeating value.
