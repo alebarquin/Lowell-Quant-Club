@@ -32,5 +32,27 @@ I did, with high confidence, find that morning trades outperformed all other tra
 </br>
 </br>
 I really have no idea whether anything I built is practical, but I have at least shown that there is a method to the madness of intraday price movements. I'm sure these models would also be good at identifying trends in more predictable scenarios, like the price decline for top stock gainers. 
-
-
+</br>
+</br>
+Further Questions:
+</br>
+</br>
+Is the opportunity cost of using limit orders too large?
+</br>
+</br>
+How can I encourage the model to trade less frequently?
+</br>
+</br>
+What other asset classes / scenarios would the model do well in? 
+</br>
+</br>
+Other inputs to include?
+</br>
+</br>
+Better training method? Hyperparameter tuning?
+</br>
+</br>
+Other forms of training methods?
+</br>
+</br>
+Visualizing the decision logic of the algorithm to describe crowd psychology?
